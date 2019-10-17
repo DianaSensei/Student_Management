@@ -1,50 +1,62 @@
-public class Student {
+import java.util.StringTokenizer;
+
+class Student {
     private String ID;
     private String Name;
     private Double GPA;
     private String Address;
     private String Notes;
 
-    public String getID() {
+    String getID() {
         return ID;
     }
-    public void setID(String ID) {
+    private void setID(String ID) {
         this.ID = ID;
     }
 
-    public String getName() {
+    String getName() {
         return Name;
     }
-    public void setName(String name) {
+    private void setName(String name) {
         Name = name;
     }
 
-    public Double getGPA() {
+    Double getGPA() {
         return GPA;
     }
-    public void setGPA(Double GPA) {
+    private void setGPA(Double GPA) {
         this.GPA = GPA;
     }
 
-    public String getAddress() {
+    private String getAddress() {
         return Address;
     }
-    public void setAddress(String address) {
+    private void setAddress(String address) {
         Address = address;
     }
 
-    public String getNotes() {
+    private String getNotes() {
         return Notes;
     }
-    public void setNotes(String notes) {
+    private void setNotes(String notes) {
         Notes = notes;
     }
 
-    public String information() {
-        return "* ID: " + getID() +"\n" +
-                " Name: " + getName() +"\n" +
-                " Address: "+getAddress() +"\n"+
-                " GPA: "+getGPA()+"/10.00\n"+
-                " Note: "+getNotes()+"\n";
+    String information() {
+        return  "ID: " + getID() +"\n" +
+                "Name: " + getName() +"\n" +
+                "Address: "+getAddress() +"\n"+
+                "GPA: "+getGPA()+"\n"+
+                "Note: "+getNotes()+"\n";
+    }
+    static Student infomation_to_Student(String info) {
+        Student student = new Student();
+        StringTokenizer tokenizer = new StringTokenizer(info,"\n");
+        student.setID(tokenizer.nextToken().substring(3));
+        student.setName(tokenizer.nextToken().substring(5));
+        student.setAddress(tokenizer.nextToken().substring(8));
+        student.setGPA(Double.parseDouble(tokenizer.nextToken().substring(4)));
+        student.setNotes(tokenizer.nextToken().substring(5));
+        return student;
     }
 }
