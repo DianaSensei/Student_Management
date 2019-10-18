@@ -1,12 +1,7 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.rmi.server.ExportException;
-import java.util.Collections;
+import java.io.File;
 import java.util.Scanner;
 
 public class Application {
-    Boolean isLogin;
     private Manager_System manager_system ;
     private Application(){
         manager_system = new Manager_System();
@@ -27,38 +22,7 @@ public class Application {
         };
         return selected;
     }
-    private int LoadSave_Menu() throws Exception{
-        ConsoleColors.clearConsole();
-        System.out.println(ConsoleColors.BLUE_BOLD + "STUDENT MANAGER");
-        System.out.println(ConsoleColors.YELLOW_BOLD+"Load/Save");
-        System.out.println(ConsoleColors.GREEN + "----------------------------");
-        System.out.println(ConsoleColors.WHITE+"1. Load Student List from file");
-        System.out.println(ConsoleColors.WHITE+"2. Save Student List to file");
-        System.out.println(ConsoleColors.WHITE_BOLD+"3. Back");
-        System.out.println(ConsoleColors.GREEN + "----------------------------"+ConsoleColors.RESET);
-        int selected = getIndexCommand(1,3);
-        switch (selected){
-            case 3:{
-                return -1;
-            }
-            case 1:{
-                Load();
-                break;
-            }
-            case 2:{
-                Save();
-                break;
-            }
-        }
-        return 1;
-    }
 
-    private void Load() {
-        
-    }
-    private void Save(){
-
-    }
     private int Menu_Start() throws Exception {
         ConsoleColors.clearConsole();
         System.out.println(ConsoleColors.BLUE_BOLD + "STUDENT MANAGER");
@@ -101,23 +65,6 @@ public class Application {
         }
         return 1;
     }
-    private int AddDelete_Menu()throws Exception{
-        System.out.println(ConsoleColors.GREEN + "----------------------------");
-        System.out.println(ConsoleColors.WHITE + "1. Add new Student to List");
-        System.out.println(ConsoleColors.WHITE + "2. Delete Student from List");
-        System.out.println(ConsoleColors.WHITE_BOLD+"3. Back");
-        System.out.println(ConsoleColors.GREEN + "----------------------------"+ConsoleColors.RESET);
-        int selected = getIndexCommand(1,2);
-        switch (selected){
-            case 1:{
-                Add();break;
-            }
-            case 2:{
-                Delete();break;
-            }
-        }
-        return -1;
-    }
     private int View_Menu() throws Exception {
         ConsoleColors.clearConsole();
         System.out.println(ConsoleColors.BLUE_BOLD + "STUDENT MANAGER");
@@ -153,14 +100,47 @@ public class Application {
         }
         return 1;
     }
-    private boolean Order_Menu(){
+    private int LoadSave_Menu() throws Exception{
+        ConsoleColors.clearConsole();
         System.out.println(ConsoleColors.BLUE_BOLD + "STUDENT MANAGER");
-        System.out.println(ConsoleColors.WHITE_BOLD+"Choose Order:");
-        System.out.println(ConsoleColors.WHITE +"1. Ascending");
-        System.out.println(ConsoleColors.WHITE +"2. Descending");
+        System.out.println(ConsoleColors.YELLOW_BOLD+"Load/Save");
+        System.out.println(ConsoleColors.GREEN + "----------------------------");
+        System.out.println(ConsoleColors.WHITE+"1. Load Student List from file");
+        System.out.println(ConsoleColors.WHITE+"2. Save Student List to file");
+        System.out.println(ConsoleColors.WHITE_BOLD+"3. Back");
+        System.out.println(ConsoleColors.GREEN + "----------------------------"+ConsoleColors.RESET);
+        int selected = getIndexCommand(1,3);
+        switch (selected){
+            case 3:{
+                return -1;
+            }
+            case 1:{
+                if(!Load()) System.out.println("Fail to Save to file!");
+                break;
+            }
+            case 2:{
+                Save();
+                break;
+            }
+        }
+        return 1;
+    }
+    private int AddDelete_Menu()throws Exception{
+        System.out.println(ConsoleColors.GREEN + "----------------------------");
+        System.out.println(ConsoleColors.WHITE + "1. Add new Student to List");
+        System.out.println(ConsoleColors.WHITE + "2. Delete Student from List");
+        System.out.println(ConsoleColors.WHITE_BOLD+"3. Back");
+        System.out.println(ConsoleColors.GREEN + "----------------------------"+ConsoleColors.RESET);
         int selected = getIndexCommand(1,2);
-        if (selected == 1) return true;
-        return false;
+        switch (selected){
+            case 1:{
+                Add();break;
+            }
+            case 2:{
+                Delete();break;
+            }
+        }
+        return -1;
     }
     private int ImportExport_Menu() throws Exception {
         ConsoleColors.clearConsole();
@@ -196,6 +176,13 @@ public class Application {
         }while(state == 1);
     }
 
+    private void View(int type,boolean order){
+        System.out.println(ConsoleColors.BLUE_BOLD + "STUDENT MANAGER");
+        System.out.println(ConsoleColors.YELLOW_BOLD+"View"+ConsoleColors.RESET);
+        System.out.println(ConsoleColors.GREEN + "----------------------------"+ConsoleColors.RESET);
+        if(type == 1 ) manager_system.View_by_GPA(order);
+        if(type == 0 ) manager_system.View_by_ID(order);
+    }
     private void Add(){
         System.out.println("***** ADD New Student *****\n");
         Scanner scanner = new Scanner(System.in);
@@ -233,20 +220,25 @@ public class Application {
             System.out.println("Fail to Remove Student!");
         }
     }
+    private boolean Load() throws Exception {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter Filename: ");
+        String name = scanner.nextLine();
+        File temp = new File(name);
+        if(!temp.exists()) return false;
+        manager_system.Load(name);
+        return true;
+    }
+    private void Save() throws Exception {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter Filename: ");
+        String name = scanner.nextLine();
+        manager_system.Save(name);
+    }
     private void Import(){
 // TO DO
     }
     private void Export(){
 // TO DO
-    }
-    private void Save_to_File(){
-// TO DO
-    }
-    private void View(int type,boolean order){
-        System.out.println(ConsoleColors.BLUE_BOLD + "STUDENT MANAGER");
-        System.out.println(ConsoleColors.YELLOW_BOLD+"View"+ConsoleColors.RESET);
-        System.out.println(ConsoleColors.GREEN + "----------------------------"+ConsoleColors.RESET);
-        if(type == 1 ) manager_system.View_by_GPA(order);
-        if(type == 0 ) manager_system.View_by_ID(order);
     }
 }

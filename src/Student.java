@@ -6,7 +6,14 @@ class Student {
     private Double GPA;
     private String Address;
     private String Notes;
-
+    Student(){}
+    Student(String ID, String Name,Double GPA, String Address,String Notes){
+        setID(ID);
+        setName(Name);
+        setGPA(GPA);
+        setAddress(Address);
+        setNotes(Notes);
+    }
     String getID() {
         return ID;
     }
@@ -28,14 +35,14 @@ class Student {
         this.GPA = GPA;
     }
 
-    private String getAddress() {
+    String getAddress() {
         return Address;
     }
     void setAddress(String address) {
         Address = address;
     }
 
-    private String getNotes() {
+    String getNotes() {
         return Notes;
     }
     void setNotes(String notes) {

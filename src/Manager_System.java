@@ -87,6 +87,13 @@ public class Manager_System {
         out_writer.write(data_Builder.toString());
         return true;
     }
+    public void Save(String path) throws Exception{
+        OutputStreamWriter out_writer = new OutputStreamWriter(new FileOutputStream(path));
+        for(Student s: student_List){
+            out_writer.write(s.getID()+"|"+s.getName()+"|"+s.getGPA()+"|"+s.getAddress()+"|"+s.getNotes()+"\n");
+        }
+        out_writer.close();
+    }
     public Boolean Import(String path) throws Exception {
         File temp = new File(path);
         if(!temp.exists()) return false;
@@ -100,5 +107,15 @@ public class Manager_System {
         }
         data_reader.close();
         return true;
+    }
+    public void Load(String path) throws Exception{
+        BufferedReader data_reader = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
+        String line;
+        while((line=data_reader.readLine())!=null){
+            String[] token = line.split("|");
+            Student student = new Student(token[0],token[1],Double.parseDouble(token[2]),token[3],token[4]);
+            student_List.add(student);
+        }
+        data_reader.close();
     }
 }
