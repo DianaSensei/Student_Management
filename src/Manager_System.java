@@ -87,8 +87,8 @@ public class Manager_System {
         } catch (IOException ignored) {
         }
     }
-    public Boolean Export(OutputStreamWriter out_writer) throws IOException {
-        if(out_writer == null ) return  false;
+    public Boolean Export(String path) throws Exception {
+        OutputStreamWriter out_writer = new OutputStreamWriter(new FileOutputStream(path));
         StringBuilder data_Builder = new StringBuilder();
         data_Builder.append("Student List").append('\n');
         for(Student s: student_List){
