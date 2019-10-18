@@ -43,10 +43,10 @@ class Student {
     }
 
     String information() {
-        return  "ID: " + getID() +"\n" +
-                "Name: " + getName() +"\n" +
-                "Address: "+getAddress() +"\n"+
-                "GPA: "+getGPA()+"\n"+
+        return  "ID: " + getID() +
+                " - Name: " + getName() +"\n" +
+                "Address: "+getAddress() +
+                " - GPA: "+getGPA()+"\n"+
                 "Note: "+getNotes()+"\n";
     }
     static Student infomation_to_Student(String info) {

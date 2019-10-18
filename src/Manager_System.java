@@ -45,9 +45,8 @@ public class Manager_System {
     }
     ///type: true for ascending
     ///      false for descending
-    void View_by_ID(Boolean type, OutputStream out){
+    void View_by_ID(Boolean type){
         ArrayList<Student> view_List = student_List;
-        OutputStreamWriter screen_Output = new OutputStreamWriter(out);
         view_List.sort(new Comparator<Student>() {
                 @Override
                 public int compare(Student o1, Student o2) {
@@ -60,17 +59,12 @@ public class Manager_System {
         if(!type) {
             Collections.reverse(view_List);
         }
-        try {
-            for (Student s : view_List)
-                screen_Output.write(s.information());
-            screen_Output.close();
-        } catch (IOException ignored) {
-        }
+        for (Student s : view_List)
+            System.out.println(s.information());
 
     }
-    void View_by_GPA(Boolean type, OutputStream out){
+    void View_by_GPA(Boolean type){
         ArrayList<Student> view_List = student_List;
-        OutputStreamWriter screen_Output = new OutputStreamWriter(out);
         view_List.sort(new Comparator<Student>() {
             @Override
             public int compare(Student o1, Student o2) {
@@ -80,12 +74,8 @@ public class Manager_System {
         if(!type) {
             Collections.reverse(view_List);
         }
-        try {
-            for (Student s : view_List)
-                screen_Output.write(s.information());
-            screen_Output.close();
-        } catch (IOException ignored) {
-        }
+        for (Student s : view_List)
+            System.out.println(s.information());
     }
     public Boolean Export(String path) throws Exception {
         OutputStreamWriter out_writer = new OutputStreamWriter(new FileOutputStream(path));
