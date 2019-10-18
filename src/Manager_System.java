@@ -45,9 +45,9 @@ public class Manager_System {
     }
     ///type: true for ascending
     ///      false for descending
-    public void View_by_ID(Boolean type){
+    public void View_by_ID(Boolean type, OutputStream out){
         ArrayList<Student> view_List = student_List;
-        OutputStreamWriter screen_Output = new OutputStreamWriter(System.out);
+        OutputStreamWriter screen_Output = new OutputStreamWriter(out);
         view_List.sort(new Comparator<Student>() {
                 @Override
                 public int compare(Student o1, Student o2) {
@@ -68,9 +68,9 @@ public class Manager_System {
         }
 
     }
-    public void View_by_GPA(Boolean type){
+    public void View_by_GPA(Boolean type, OutputStream out){
         ArrayList<Student> view_List = student_List;
-        OutputStreamWriter screen_Output = new OutputStreamWriter(System.out);
+        OutputStreamWriter screen_Output = new OutputStreamWriter(out);
         view_List.sort(new Comparator<Student>() {
             @Override
             public int compare(Student o1, Student o2) {
