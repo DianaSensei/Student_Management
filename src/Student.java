@@ -10,35 +10,35 @@ class Student {
     String getID() {
         return ID;
     }
-    private void setID(String ID) {
+    void setID(String ID) {
         this.ID = ID;
     }
 
     String getName() {
         return Name;
     }
-    private void setName(String name) {
+    void setName(String name) {
         Name = name;
     }
 
     Double getGPA() {
         return GPA;
     }
-    private void setGPA(Double GPA) {
+    void setGPA(Double GPA) {
         this.GPA = GPA;
     }
 
     private String getAddress() {
         return Address;
     }
-    private void setAddress(String address) {
+    void setAddress(String address) {
         Address = address;
     }
 
     private String getNotes() {
         return Notes;
     }
-    private void setNotes(String notes) {
+    void setNotes(String notes) {
         Notes = notes;
     }
 

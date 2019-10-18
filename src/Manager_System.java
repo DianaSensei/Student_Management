@@ -5,13 +5,13 @@ import java.util.Comparator;
 
 public class Manager_System {
     private  ArrayList<Student> student_List;
-    public Manager_System(){
+    Manager_System(){
         student_List = new ArrayList<>();
     }
     public Manager_System(Manager_System manager_system){
         student_List = manager_system.student_List;
     }
-    public Boolean AddStudent(Student student){
+    Boolean AddStudent(Student student){
         if(student_List == null) return false;
         student_List.add(student);
         return true;
@@ -45,7 +45,7 @@ public class Manager_System {
     }
     ///type: true for ascending
     ///      false for descending
-    public void View_by_ID(Boolean type, OutputStream out){
+    void View_by_ID(Boolean type, OutputStream out){
         ArrayList<Student> view_List = student_List;
         OutputStreamWriter screen_Output = new OutputStreamWriter(out);
         view_List.sort(new Comparator<Student>() {
@@ -68,7 +68,7 @@ public class Manager_System {
         }
 
     }
-    public void View_by_GPA(Boolean type, OutputStream out){
+    void View_by_GPA(Boolean type, OutputStream out){
         ArrayList<Student> view_List = student_List;
         OutputStreamWriter screen_Output = new OutputStreamWriter(out);
         view_List.sort(new Comparator<Student>() {
