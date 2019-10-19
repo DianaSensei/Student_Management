@@ -7,7 +7,7 @@ public class Application {
         manager_system = new Manager_System();
     }
     private int getIndexCommand(int min, int max){
-        int selected = 0;boolean flag = false;
+        int selected = 0; boolean flag = false;
         Scanner scanner = new Scanner(System.in);
         while(!flag){
             System.out.println("Enter number of command: ");
@@ -115,11 +115,13 @@ public class Application {
                 return -1;
             }
             case 1:{
-                if(!Load()) System.out.println("Fail to Save to file!");
+                if(!Load()) System.out.println("Fail to Load to file!");
+                else System.out.println("Successful");
                 break;
             }
             case 2:{
-                Save();
+                if(!Save()) System.out.println("Fail to Save to file!");
+                else System.out.println("Successful");
                 break;
             }
         }
@@ -157,11 +159,13 @@ public class Application {
                 return -1;
             }
             case 1:{
-                Import();
+                if(Import()) System.out.println("Import Successful!");
+                else System.out.println("Fail to Import .CSV file!");
                 break;
             }
             case 2:{
-                Export();
+                if(Export()) System.out.println("Export Successful!");
+                else System.out.println("Fail to Export .CSV file!");
                 break;
             }
         }
@@ -194,6 +198,9 @@ public class Application {
         System.out.print("Name: ");
         str = scanner.nextLine();
         student.setName(str);
+        System.out.print("ImagePath: ");
+        str = scanner.nextLine();
+        student.setImagePath(str);
         System.out.print("Address: ");
         str = scanner.nextLine();
         student.setAddress(str);
@@ -222,23 +229,35 @@ public class Application {
     }
     private boolean Load() throws Exception {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter Filename: ");
+        System.out.print("Enter Filename: ");
         String name = scanner.nextLine();
         File temp = new File(name);
         if(!temp.exists()) return false;
         manager_system.Load(name);
         return true;
     }
-    private void Save() throws Exception {
+    private boolean Save() throws Exception {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter Filename: ");
         String name = scanner.nextLine();
         manager_system.Save(name);
+        return true;
     }
-    private void Import(){
-// TO DO
+    private boolean Import() throws Exception {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter Filename: ");
+        String name = scanner.nextLine();
+
+        File temp = new File(name);
+        if(!temp.exists()) return false;
+        manager_system.Import(name);
+        return true;
     }
-    private void Export(){
-// TO DO
+    private boolean Export() throws Exception {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter Filename: ");
+        String name = scanner.nextLine();
+        manager_system.Export(name);
+        return true;
     }
 }

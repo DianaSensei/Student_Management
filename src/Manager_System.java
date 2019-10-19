@@ -1,5 +1,7 @@
 import java.io.*;
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -77,43 +79,87 @@ public class Manager_System {
         for (Student s : view_List)
             System.out.println(s.information());
     }
-    public Boolean Export(String path) throws Exception {
+    void Export(String path) throws Exception {
         OutputStreamWriter out_writer = new OutputStreamWriter(new FileOutputStream(path));
         StringBuilder data_Builder = new StringBuilder();
         data_Builder.append("Student List").append('\n');
         for(Student s: student_List){
-            data_Builder.append(s.information()).append('\n');
+            data_Builder.append(s.toCSV()).append('\n');
         }
         out_writer.write(data_Builder.toString());
-        return true;
+        out_writer.close();
     }
-    public void Save(String path) throws Exception{
+    void Save(String path) throws Exception{
         OutputStreamWriter out_writer = new OutputStreamWriter(new FileOutputStream(path));
         for(Student s: student_List){
-            out_writer.write(s.getID()+"|"+s.getName()+"|"+s.getGPA()+"|"+s.getAddress()+"|"+s.getNotes()+"\n");
+            out_writer.write(s.getID()+";"+s.getName()+";"+s.getImagePath()+";"+s.getGPA()+";"+s.getAddress()+";"+s.getNotes()+"\n");
         }
         out_writer.close();
     }
-    public Boolean Import(String path) throws Exception {
-        File temp = new File(path);
-        if(!temp.exists()) return false;
-
+    void Import(String path) throws Exception {
         BufferedReader data_reader = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
         String line = data_reader.readLine();
-        if(!line.equals("Student List")) return false;
-
-        while((line = data_reader.readLine())!= null){
-            student_List.add(Student.infomation_to_Student(line));
+        while((line = data_reader.readLine())!=null){
+            String[] token = QuoteHandle(line);
+            for(int i=0;i<token.length;i++){
+                if(token[i].isEmpty()) token[i]=" ";
+            }
+            Student student = new Student(token[0],token[1],token[2],Double.parseDouble(token[3]),token[4],token[5]);
+            student_List.add(student);
         }
         data_reader.close();
-        return true;
     }
-    public void Load(String path) throws Exception{
+    static String[] QuoteHandle(String s){
+        int quote_index = s.indexOf('\"');
+        String[] token = s.split(",");
+        if(quote_index == -1) return token;
+        boolean flag = false;
+        int mark = 0 ;
+        ArrayList<Integer> remove = new ArrayList<>();
+        for(int i=0;i<token.length;i++){
+            if(token[i].charAt(0) == '\"'){
+                flag = true;
+                    token[i] = token[i].substring(2);
+                    mark = i;
+                    continue;
+            }
+            else if(token[i].charAt(token[i].length()-1)=='\"'){
+                    token[mark] = token[mark]+", "+token[i].substring(0,token[i].length()-1);
+                    remove.add(i);
+                    flag = false; continue;
+            }
+            if(flag){
+                token[mark] = token[mark]+", "+token[i].substring(0,token[i].length()-1);
+                remove.add(i);
+            }
+        }
+        ArrayList<String> res = new ArrayList<>(Arrays.asList(token));
+        for(int i = 0;i<remove.size();i++){
+            res.remove(remove.get(i)-1);
+        }
+        System.out.println("size "+res.size());
+        return GetStringArray(res);
+    }
+    public static String[] GetStringArray(ArrayList<String> arr) {
+
+        // declaration and initialise String Array
+        String str[] = new String[arr.size()];
+
+        // ArrayList to Array Conversion
+        for (int j = 0; j < arr.size(); j++) {
+
+            // Assign each value to String array
+            str[j] = arr.get(j);
+        }
+
+        return str;
+    }
+    void Load(String path) throws Exception{
         BufferedReader data_reader = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
         String line;
         while((line=data_reader.readLine())!=null){
-            String[] token = line.split("|");
-            Student student = new Student(token[0],token[1],Double.parseDouble(token[2]),token[3],token[4]);
+            String[] token = line.split(";");
+            Student student = new Student(token[0],token[1],token[2],Double.parseDouble(token[3]),token[4],token[5]);
             student_List.add(student);
         }
         data_reader.close();

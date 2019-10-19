@@ -4,12 +4,14 @@ class Student {
     private String ID;
     private String Name;
     private Double GPA;
+    private String ImagePath;
     private String Address;
     private String Notes;
     Student(){}
-    Student(String ID, String Name,Double GPA, String Address,String Notes){
+    Student(String ID, String Name,String ImagePath,Double GPA, String Address,String Notes){
         setID(ID);
         setName(Name);
+        setImagePath(ImagePath);
         setGPA(GPA);
         setAddress(Address);
         setNotes(Notes);
@@ -42,6 +44,9 @@ class Student {
         Address = address;
     }
 
+    String getImagePath() { return ImagePath; }
+    void setImagePath(String imagePath) { ImagePath = imagePath;}
+
     String getNotes() {
         return Notes;
     }
@@ -52,18 +57,40 @@ class Student {
     String information() {
         return  "ID: " + getID() +
                 " - Name: " + getName() +"\n" +
-                "Address: "+getAddress() +
-                " - GPA: "+getGPA()+"\n"+
-                "Note: "+getNotes()+"\n";
+                "ImagePath: "+ getImagePath() +"\n"+
+                "Address: "+getAddress() +"\n"+
+                "GPA: "+getGPA()+
+                " - Note: "+getNotes()+"\n";
+    }
+    String toCSV(){
+        StringBuilder str = new StringBuilder();
+        if(getID().indexOf(',') != -1)  str.append(",\" ").append(getID()).append("\"");
+        else str.append(getID()).append(", ");
+
+        if(getName().indexOf(',') != -1)  str.append(",\" ").append(getName()).append("\"").append(", ");
+        else str.append(getName()).append(", ");
+
+        if(getImagePath().indexOf(',') != -1)  str.append(",\" ").append(getImagePath()).append("\"").append(", ");
+        else str.append(getImagePath()).append(", ");
+
+        str.append(getGPA());
+
+        if(getAddress().indexOf(',') != -1)   str.append(",\" ").append(getAddress()).append("\"").append(", ");
+        else str.append(", ").append(getAddress()).append(", ");
+
+        if(getNotes().indexOf(',') != -1)   str.append(",\" ").append(getNotes()).append("\"");
+        else str.append(getNotes());
+        return str.toString();
     }
     static Student infomation_to_Student(String info) {
         Student student = new Student();
-        StringTokenizer tokenizer = new StringTokenizer(info,"\n");
-        student.setID(tokenizer.nextToken().substring(3));
-        student.setName(tokenizer.nextToken().substring(5));
-        student.setAddress(tokenizer.nextToken().substring(8));
-        student.setGPA(Double.parseDouble(tokenizer.nextToken().substring(4)));
-        student.setNotes(tokenizer.nextToken().substring(5));
+        StringTokenizer tokenizer = new StringTokenizer(info,", ");
+        student.setID(tokenizer.nextToken());
+        student.setName(tokenizer.nextToken());
+        student.setImagePath(tokenizer.nextToken());
+        student.setAddress(tokenizer.nextToken());
+        student.setGPA(Double.parseDouble(tokenizer.nextToken()));
+        student.setNotes(tokenizer.nextToken());
         return student;
     }
 }
