@@ -1,9 +1,5 @@
 import java.io.*;
-import java.sql.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 
 public class Manager_System {
     private  ArrayList<Student> student_List;
@@ -15,6 +11,7 @@ public class Manager_System {
     }
     Boolean AddStudent(Student student){
         if(student_List == null) return false;
+        if(Search(student.getID())!= null) return false;
         student_List.add(student);
         return true;
     }
@@ -23,7 +20,7 @@ public class Manager_System {
        student_List.remove(student);
         return true;
     }
-    public Boolean RemoveStudent_by_ID(String ID){
+    Boolean RemoveStudent_by_ID(String ID){
         if(student_List == null) return false;
         Student mark = null;
         for(Student s: student_List)
@@ -47,7 +44,7 @@ public class Manager_System {
     }
     ///type: true for ascending
     ///      false for descending
-    void View_by_ID(Boolean type){
+    ArrayList<Student> Sort_by_ID(Boolean type){
         ArrayList<Student> view_List = student_List;
         view_List.sort(new Comparator<Student>() {
                 @Override
@@ -61,11 +58,9 @@ public class Manager_System {
         if(!type) {
             Collections.reverse(view_List);
         }
-        for (Student s : view_List)
-            System.out.println(s.information());
-
+        return view_List;
     }
-    void View_by_GPA(Boolean type){
+    ArrayList<Student> Sort_by_GPA(Boolean type){
         ArrayList<Student> view_List = student_List;
         view_List.sort(new Comparator<Student>() {
             @Override
@@ -76,8 +71,7 @@ public class Manager_System {
         if(!type) {
             Collections.reverse(view_List);
         }
-        for (Student s : view_List)
-            System.out.println(s.information());
+        return view_List;
     }
     void Export(String path) throws Exception {
         OutputStreamWriter out_writer = new OutputStreamWriter(new FileOutputStream(path));
@@ -109,7 +103,7 @@ public class Manager_System {
         }
         data_reader.close();
     }
-    static String[] QuoteHandle(String s){
+    private static String[] QuoteHandle(String s){
         int quote_index = s.indexOf('\"');
         String[] token = s.split(",");
         if(quote_index == -1) return token;
@@ -140,7 +134,7 @@ public class Manager_System {
         System.out.println("size "+res.size());
         return GetStringArray(res);
     }
-    public static String[] GetStringArray(ArrayList<String> arr) {
+    private static String[] GetStringArray(ArrayList<String> arr) {
 
         // declaration and initialise String Array
         String str[] = new String[arr.size()];
@@ -163,5 +157,22 @@ public class Manager_System {
             student_List.add(student);
         }
         data_reader.close();
+    }
+    //
+    void Update_Info(Student student,Student Info){
+        student.setID(Info.getID());
+        student.setImagePath(Info.getImagePath());
+        student.setGPA(Info.getGPA());
+        student.setAddress(Info.getAddress());
+        student.setNotes(Info.getNotes());
+        student.setName(Info.getName());
+    }
+    Student Search(String ID){
+        System.out.println(ID);
+        for(Student s: student_List){
+            if(s.getID().equals(ID))
+                return s;
+        }
+        return null;
     }
 }

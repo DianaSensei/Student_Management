@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Application {
@@ -10,7 +11,7 @@ public class Application {
         int selected = 0; boolean flag = false;
         Scanner scanner = new Scanner(System.in);
         while(!flag){
-            System.out.println("Enter number of command: ");
+            System.out.print("Enter number of command: ");
             try {
                 int temp = scanner.nextInt();
                 selected = temp;
@@ -29,10 +30,11 @@ public class Application {
         System.out.println(ConsoleColors.GREEN + "----------------------------");
         System.out.println(ConsoleColors.WHITE + "1. Load/Save Student List from/to file");
         System.out.println(ConsoleColors.WHITE + "2. View Student List");
-        System.out.println(ConsoleColors.WHITE + "3. Add new Student to List");
-        System.out.println(ConsoleColors.WHITE + "4. Delete Student from List");
-        System.out.println(ConsoleColors.WHITE + "5. Import/Export Student List from/to .CSV file");
-        System.out.println(ConsoleColors.WHITE_BOLD+"6. Quit");
+        System.out.println(ConsoleColors.WHITE + "3. Update Student Info");
+        System.out.println(ConsoleColors.WHITE + "4. Add new Student to List");
+        System.out.println(ConsoleColors.WHITE + "5. Delete Student from List");
+        System.out.println(ConsoleColors.WHITE + "6. Import/Export Student List from/to .CSV file");
+        System.out.println(ConsoleColors.WHITE_BOLD+"7. Quit");
         System.out.println(ConsoleColors.GREEN + "----------------------------"+ConsoleColors.RESET);
         int selected = getIndexCommand(1, 6);
         switch (selected) {
@@ -46,20 +48,25 @@ public class Application {
                 else View_Menu();
                 break;
             }
-            case 3: {
-                Add();
+            case 3:{
+                if(Update_Info()== -1) return 1;
+                else Update_Info();
                 break;
             }
             case 4: {
-                Delete();
+                Add();
                 break;
             }
             case 5: {
+                Delete();
+                break;
+            }
+            case 6: {
                 if(ImportExport_Menu() == -1) return 1;
                 else ImportExport_Menu();
                 break;
             }
-            case 6: {
+            case 7: {
                 return -1;
             }
         }
@@ -171,7 +178,25 @@ public class Application {
         }
         return 1;
     }
+    private int Update_Info() throws Exception{
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter Student ID: ");
+        String ID = scanner.nextLine();
+        Student s= manager_system.Search(ID);
+        if(s == null) {
+            System.out.println("Can't find Student ID");
+            return -1;
+        }
+        System.out.println(s.information());
+        Student info = new Student();
+        System.out.println("Enter new Info:");
+        System.out.print("ID: ");
+        
+        s.setNotes(str);
 
+        System.out.println("Update Successful!");
+        return -1;
+    }
     public static void main(String[] args) throws Exception {
         Application app = new Application();
         int state = 0;
@@ -184,8 +209,16 @@ public class Application {
         System.out.println(ConsoleColors.BLUE_BOLD + "STUDENT MANAGER");
         System.out.println(ConsoleColors.YELLOW_BOLD+"View"+ConsoleColors.RESET);
         System.out.println(ConsoleColors.GREEN + "----------------------------"+ConsoleColors.RESET);
-        if(type == 1 ) manager_system.View_by_GPA(order);
-        if(type == 0 ) manager_system.View_by_ID(order);
+        if(type == 1 ) {
+            ArrayList<Student> view_List = manager_system.Sort_by_GPA(order);
+            for (Student s : view_List)
+                System.out.println(s.information());
+        }
+        if(type == 0 ) {
+            ArrayList<Student> view_List = manager_system.Sort_by_ID(order);
+            for (Student s : view_List)
+                System.out.println(s.information());
+        }
     }
     private void Add(){
         System.out.println("***** ADD New Student *****\n");
