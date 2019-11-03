@@ -7,11 +7,20 @@ class Student {
     private String ImagePath;
     private String Address;
     private String Notes;
+    private String Grade;
+    private String DOB;
     Student(){}
     Student(String ID, String Name,String ImagePath,Double GPA, String Address,String Notes){
         setID(ID);
         setName(Name);
         setImagePath(ImagePath);
+        setGPA(GPA);
+        setAddress(Address);
+        setNotes(Notes);
+    }
+    Student(String ID, String Name,Double GPA, String Address,String Notes){
+        setID(ID);
+        setName(Name);
         setGPA(GPA);
         setAddress(Address);
         setNotes(Notes);
@@ -53,7 +62,10 @@ class Student {
     void setNotes(String notes) {
         Notes = notes;
     }
-
+    String[] toStringArray(){
+        String[] arr = {this.getID(),this.getName(),this.getGPA().toString(),this.getAddress(),this.getNotes()};
+        return arr;
+    }
     String information() {
         return  "ID: " + getID() +
                 " - Name: " + getName() +"\n" +
@@ -92,5 +104,21 @@ class Student {
         student.setGPA(Double.parseDouble(tokenizer.nextToken()));
         student.setNotes(tokenizer.nextToken());
         return student;
+    }
+
+    public String getGrade() {
+        return Grade;
+    }
+
+    public void setGrade(String grade) {
+        Grade = grade;
+    }
+
+    public String getDOB() {
+        return DOB;
+    }
+
+    public void setDOB(String DOB) {
+        this.DOB = DOB;
     }
 }

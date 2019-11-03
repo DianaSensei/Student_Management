@@ -181,8 +181,8 @@ public class Application {
     private int Update_Info() throws Exception{
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter Student ID: ");
-        String ID = scanner.nextLine();
-        Student s= manager_system.Search(ID);
+        String str = scanner.nextLine();
+        Student s= manager_system.Search(str);
         if(s == null) {
             System.out.println("Can't find Student ID");
             return -1;
@@ -190,11 +190,32 @@ public class Application {
         System.out.println(s.information());
         Student info = new Student();
         System.out.println("Enter new Info:");
-        System.out.print("ID: ");
-        
-        s.setNotes(str);
+        try{
 
-        System.out.println("Update Successful!");
+            System.out.print("ID: ");
+            str=scanner.nextLine();
+            info.setID(str);
+            System.out.print("Name: ");
+            str=scanner.nextLine();
+            info.setName(str);
+            System.out.print("GPA");
+            str=scanner.nextLine();
+            info.setGPA(Double.parseDouble(str));
+            System.out.print("ImagePath: ");
+            str=scanner.nextLine();
+            info.setImagePath(str);
+            System.out.print("Address: ");
+            str=scanner.nextLine();
+            info.setAddress(str);
+            System.out.print("Notes: ");
+            str=scanner.nextLine();
+            info.setNotes(str);
+
+            manager_system.Update_Info(s,info);
+            System.out.println("Update Successful!");
+        }catch (Exception e){
+            System.out.println("Invalid Input!");
+        }
         return -1;
     }
     public static void main(String[] args) throws Exception {
